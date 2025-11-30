@@ -35,6 +35,9 @@
             "providers": [
                 "HelloFromSteve\\Paystack\\PaystackServiceProvider"
             ]
+        },
+        "branch-alias": {
+        "dev-main": "1.1-dev"
         }
     },
     "minimum-stability": "dev",
