@@ -29,13 +29,32 @@ PAYSTACK_URL=https://api.paystack.co
 ### Using the Helper Function
 
 ```php
+
+
+// Or use helper function and chain methods directly
+$plans = paystack()->getPlans();
+
+
+$transaction = paystack('initializeTransaction', [
+    'email' => 'stephen@solentik.com',
+    'amount' => 10000, // amount in the lowest form of currency (pesewas/kobo)
+]);
+
 // Get the service instance
 $paystack = paystack();
 
+
+```
+
+
+
 // Or call methods directly
+
+
+
 $plans = paystack('getPlans');
 $transaction = paystack('initializeTransaction', [
-    'email' => 'customer@example.com',
+    'email' => 'stephen@solentik.com',
     'amount' => 10000, // amount in kobo
 ]);
 ```
@@ -54,7 +73,7 @@ class PaymentController extends Controller
     public function initialize()
     {
         $response = $this->paystack->initializeTransaction([
-            'email' => 'customer@example.com',
+            'email' => 'stephen@solentik.com',
             'amount' => 10000,
         ]);
         
