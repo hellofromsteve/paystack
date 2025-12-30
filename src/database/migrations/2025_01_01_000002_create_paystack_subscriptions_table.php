@@ -11,11 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('paystack_customers', function (Blueprint $table) {
+        Schema::create('paystack_subscriptions', function (Blueprint $table) {
             $table->id();
-            $table->numericMorphs('billable');
-            $table->string('paystack_id')->index(); // The CUS_xxx code
-            $table->string('email'); // The email registered on Paystack
+            $table->morphs('billable');
+            $table->string('name');
+            $table->string('paystack_id')->unique();
+            $table->string('paystack_status');
+            $table->string('paystack_plan')->nullable();
+            $table->integer('quantity')->default(1);
+            $table->string('email_token')->nullable();
+            $table->timestamp('trial_ends_at')->nullable();
+            $table->timestamp('ends_at')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('paystack_customers');
+        Schema::dropIfExists('paystack_subscriptions');
     }
 };

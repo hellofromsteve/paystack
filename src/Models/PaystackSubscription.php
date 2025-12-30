@@ -20,7 +20,7 @@ class PaystackSubscription extends Model
 
     public function active(): bool
     {
-        return $this->paystack_status === 'active' && 
+        return ($this->paystack_status === 'active' || $this->onGracePeriod()) && 
                (is_null($this->ends_at) || $this->ends_at->isFuture());
     }
 

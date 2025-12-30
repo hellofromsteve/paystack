@@ -46,6 +46,9 @@
     },
     "minimum-stability": "stable",
     "prefer-stable": true,
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
     "config": {
         "allow-plugins": {
             "pestphp/pest-plugin": false
