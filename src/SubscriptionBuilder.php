@@ -20,6 +20,7 @@ class SubscriptionBuilder
     protected string $name;
     protected string $plan;
     protected int $quantity = 1;
+    protected ?int $trialDays = null;
     protected array $metadata = [];
 
     public function __construct(Model $owner, string $name, string $plan)
@@ -35,6 +36,15 @@ class SubscriptionBuilder
     public function quantity(int $quantity): self
     {
         $this->quantity = $quantity;
+        return $this;
+    }
+
+    /**
+     * Specify the number of days of the trial.
+     */
+    public function trialDays(int $trialDays): self
+    {
+        $this->trialDays = $trialDays;
         return $this;
     }
 
@@ -65,13 +75,19 @@ class SubscriptionBuilder
         $customerCode = $this->owner->paystackCustomer->paystack_id;
 
         // 2. Create Subscription via API
-        $response = app('paystack')->subscription()->create([
+        $payload = [
             'customer' => $customerCode,
             'plan' => $this->plan,
             'authorization' => $authorization,
             'quantity' => $this->quantity,
             'metadata' => $this->metadata,
-        ]);
+        ];
+
+        if ($this->trialDays) {
+            $payload['start_date'] = now()->addDays($this->trialDays)->toIso8601String();
+        }
+
+        $response = app('paystack')->subscription()->create($payload);
 
         if (! ($response['status'] ?? false)) {
             throw new PaystackException(
@@ -90,6 +106,7 @@ class SubscriptionBuilder
             'paystack_status' => $data['status'],
             'quantity' => $this->quantity,
             'email_token' => $data['email_token'] ?? null,
+            'trial_ends_at' => $this->trialDays ? now()->addDays($this->trialDays) : null,
         ]);
     }
 

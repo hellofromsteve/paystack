@@ -104,4 +104,22 @@ class ChargeResource extends BaseResource
             $this->request()->get("$this->baseUrl/charge/$reference")
         );
     }
+
+
+    /**
+     * Submit phone number when requested.
+     * * @param string $phone Phone number submitted by user
+     * @param string $reference Transaction reference for the ongoing charge
+     * @return array
+     * @throws PaystackException|ConnectionException
+     */
+    public function submitPhone(string $phone, string $reference): array
+    {
+        return $this->handleResponse(
+            $this->request()->post("$this->baseUrl/charge/submit_phone", [
+                'phone' => $phone,
+                'reference' => $reference
+            ])
+        );
+    }
 }

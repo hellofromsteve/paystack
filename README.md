@@ -1,102 +1,130 @@
-# Laravel Paystack Package
+# Laravel Paystack
 
-A simple  Laravel package for integrating Paystack payments into your Laravel 11 and Above application.
+A robust, Cashier-like Paystack integration package for Laravel 11+. This package provides an expressive, fluent interface to Paystack's subscription billing services, handling boilerplate subscription code so you can focus on building your application.
+
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/hellofromsteve/paystack.svg?style=flat-square)](https://packagist.org/packages/hellofromsteve/paystack)
+[![Total Downloads](https://img.shields.io/packagist/dt/hellofromsteve/paystack.svg?style=flat-square)](https://packagist.org/packages/hellofromsteve/paystack)
+[![License](https://img.shields.io/packagist/l/hellofromsteve/paystack.svg?style=flat-square)](https://packagist.org/packages/hellofromsteve/paystack)
+
+## Documentation
+
+For full documentation, usage guides, and API reference, please visit:
+
+**[https://paystack.stephenasare.dev/](https://paystack.stephenasare.dev/)**
+
+---
+
+## Features
+
+- **Subscription Management**: Fluent API for creating, cancelling, and resuming subscriptions.
+- **Webhooks**: Automatic handling of Paystack webhooks (payments, subscriptions, invoices).
+- **Trial Periods**: Built-in support for trial periods on subscriptions.
+- **Grace Periods**: Handle subscription expiration gracefully.
+- **Invoices**: Access and manage invoices directly.
+- **Generic Payment Support**: Support for Mobile Money and other payment channels.
+- **Testing**: Fully tested with PHPUnit and Orchestra Testbench.
+
+## Requirements
+
+- PHP 8.1+
+- Laravel 11.0+
 
 ## Installation
+
+You can install the package via composer:
 
 ```bash
 composer require hellofromsteve/paystack
 ```
 
-## Configuration
-
-Publish the configuration file:
+After installing, run the installation command to publish the configuration and migrations:
 
 ```bash
-php artisan vendor:publish --tag=paystack-config
+php artisan paystack:install
 ```
 
-Add your Paystack credentials to your `.env` file:
+This will:
+1. Publish `config/paystack.php`
+2. Publish database migrations
+3. Ask if you want to run the migrations immediately
 
-```env
-PAYSTACK_SECRET_KEY=your_secret_key_here
-PAYSTACK_PUBLIC_KEY=your_public_key_here
-PAYSTACK_URL=https://api.paystack.co
-```
+## Quick Start
 
-## Usage
+### 1. Setup Billable Model
 
-### Using the Helper Function
+Add the `Billable` trait to your User model:
 
 ```php
+use HelloFromSteve\Paystack\Traits\HasPaystack;
+use HelloFromSteve\Paystack\Contracts\Billable;
 
-
-// Or use helper function and chain methods directly
-$plans = paystack()->getPlans();
-
-
-$transaction = paystack()->initializeTransaction([
-    'email' => 'stephen@solentik.com',
-    'amount' => 10000, // amount in the lowest form of currency (pesewas/kobo)
-]);
-```
-
-```php
-
-// Getting the service instance
-$paystack = paystack();
-
-// Not Recommended
-
-```
-
-
-```php
-// Or pass methods directly
-
-$plans = paystack('getPlans');
-
-$transaction = paystack('initializeTransaction', [
-    'email' => 'stephen@solentik.com',
-    'amount' => 10000, // amount in the lowest form of currency (pesewas/kobo)
-]);
-```
-
-### Using Dependency Injection
-
-```php
-use HelloFromSteve\Paystack\PaystackService;
-
-class PaymentController extends Controller
+class User extends Authenticatable implements Billable
 {
-    public function __construct(
-        protected PaystackService $paystack
-    ) {}
-
-    public function initialize()
-    {
-        $response = $this->paystack->initializeTransaction([
-            'email' => 'stephen@solentik.com',
-            'amount' => 10000,
-        ]);
-        
-        return $response;
-    }
+    use HasPaystack;
 }
 ```
 
-## Available Methods
+### 2. Create a Subscription
 
-- `getPlans()` - Get all plans
-- `createPlan(array $payload)` - Create a new plan
-- `getTransactions()` - Get all transactions
-- `initializeTransaction(array $payload)` - Initialize a transaction
-- `verifyTransaction(string $reference)` - Verify a transaction
-- `createCustomer(array $payload)` - Create a customer
-- `chargeAuthorization(array $payload)` - Charge authorization
-- `createSubscription(array $payload)` - Subscribe customer to a plan
+```php
+$user = User::find(1);
+
+// Create a subscription with a trial period
+$user->newSubscription('default', 'PLN_gx2wn530m0i3w3m')
+    ->trialDays(7)
+    ->create($authCode);
+```
+
+### 3. Check Subscription Status
+
+```php
+if ($user->subscribed('default')) {
+    // User has an active subscription...
+}
+
+if ($user->onTrial('default')) {
+    // User is on a trial period...
+}
+```
+
+## Webhooks
+
+The package automatically handles Paystack webhooks for you. Just set up your webhook URL in the Paystack Dashboard to point to:
+
+`https://your-domain.com/paystack/webhook`
+
+You can listen to events in your application:
+
+```php
+use HelloFromSteve\Paystack\Events\PaymentSuccess;
+
+Event::listen(PaymentSuccess::class, function ($event) {
+    // Handle successful payment...
+});
+```
+
+## Contributing
+
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
+## Security
+
+If you discover any security related issues, please email stephen@solentik.com instead of using the issue tracker.
+
+## Credits
+
+- [Stephen Asare](https://github.com/hellofromsteve)
+- [All Contributors](../../contributors)
 
 ## License
 
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+
 MIT
+
+## Support
+
+If you find this package helpful, please consider:
+-  Starring the repository on [GitHub](https://github.com/hellofromsteve/paystack)
+-  Following me on [Twitter/X](https://x.com/hellofromsteve1)
 

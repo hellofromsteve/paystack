@@ -125,7 +125,7 @@ class PaystackService
      * Configure and initiate custom payment channels (MoMo, USSD, Direct Bank).
      * * @return ChargeResource
      */
-    public function charges(): ChargeResource
+    public function charge(): ChargeResource
     {
         return new ChargeResource($this->secret, $this->baseUrl);
     }

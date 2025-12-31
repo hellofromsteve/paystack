@@ -36,7 +36,9 @@ class PaystackServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-    // Check if the application is running in the console (terminal)
+        $this->loadRoutesFrom(__DIR__.'/../routes/paystack.php');
+
+        // Check if the application is running in the console (terminal)
     // There is no need to register publishing logic for web requests
         if ($this->app->runningInConsole()) {
             

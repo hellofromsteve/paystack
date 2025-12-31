@@ -163,4 +163,48 @@ class PaystackTraitTest extends PaystackTestCase
         $this->assertInstanceOf(TestUser::class, $found);
         $this->assertEquals($user->id, $found->id);
     }
+
+    #[Test]
+    public function it_can_check_if_subscription_is_on_trial()
+    {
+        $user = TestUser::create(['email' => 'steve@example.com']);
+        
+        $user->subscriptions()->create([
+            'name' => 'default',
+            'paystack_id' => 'sub_123',
+            'paystack_plan' => 'plan_123',
+            'paystack_status' => 'active',
+            'trial_ends_at' => now()->addDays(5),
+        ]);
+
+        $this->assertTrue($user->onTrial('default'));
+        $this->assertFalse($user->onTrial('other'));
+        
+        // Test with plan
+        $this->assertTrue($user->onTrial('default', 'plan_123'));
+        $this->assertFalse($user->onTrial('default', 'plan_456'));
+    }
+
+    #[Test]
+    public function it_can_set_trial_via_billable_model()
+    {
+        $user = TestUser::create(['email' => 'steve@example.com']);
+        
+        $user->subscriptions()->create([
+            'name' => 'default',
+            'paystack_id' => 'sub_123',
+            'paystack_plan' => 'plan_123',
+            'paystack_status' => 'active',
+        ]);
+
+        $this->assertFalse($user->onTrial('default'));
+
+        $user->setTrial('default', 7);
+
+        $this->assertTrue($user->onTrial('default'));
+        $this->assertEquals(
+            now()->addDays(7)->format('Y-m-d'), 
+            $user->subscription('default')->trial_ends_at->format('Y-m-d')
+        );
+    }
 }

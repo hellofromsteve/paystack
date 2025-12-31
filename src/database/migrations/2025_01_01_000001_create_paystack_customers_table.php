@@ -16,8 +16,8 @@ return new class extends Migration
             $table->morphs('billable'); // billable_id and billable_type
             $table->string('paystack_id')->index(); // e.g., CUS_xxxx
             $table->string('email');
-            $table->string('card_brand')->nullable();
-            $table->string('card_last_four', 4)->nullable();
+            $table->string('pm_type')->nullable(); // e.g., 'visa', 'mastercard', 'mobile_money'
+            $table->string('pm_last_four', 4)->nullable();
             $table->timestamps();
         });
     }

@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('paystack_subscriptions');
+        Schema::dropIfExists('paystack_transactions');
     }
 };
