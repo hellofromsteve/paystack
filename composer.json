@@ -1,7 +1,7 @@
 {
     "name": "stephenasaredev/paystack",
     "description": "A Laravel Package for Paystack payment integration for laravel 11 and above",
-    "keywords": ["paystack laravel", "africa-payment paystack", "ghana-payment-laravel", "paystack-nigeria-laravel", "open-source paystack", "contributions paystack", "discussions", "issue-tracking"],
+    "keywords": ["paystack laravel package", "africa-payment paystack", "ghana-payment-laravel", "paystack-nigeria-laravel", "open-source paystack", "contributions paystack", "discussions", "issue-tracking"],
     "type": "library",
     "license": "MIT",
     "homepage": "https://paystack.stephenasare.dev/",
