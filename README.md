@@ -2,9 +2,9 @@
 
 A robust, Cashier-like Paystack integration package for Laravel 11+. This package provides an expressive, fluent interface to Paystack's subscription billing services, handling boilerplate subscription code so you can focus on building your application.
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/stephenasare/paystack.svg?style=flat-square)](https://packagist.org/packages/stephenasare/paystack)
-[![Total Downloads](https://img.shields.io/packagist/dt/stephenasare/paystack.svg?style=flat-square)](https://packagist.org/packages/stephenasare/paystack)
-[![License](https://img.shields.io/packagist/l/stephenasare/paystack.svg?style=flat-square)](https://packagist.org/packages/stephenasare/paystack)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/stephenasaredev/paystack.svg?style=flat-square)](https://packagist.org/packages/stephenasaredev/paystack)
+[![Total Downloads](https://img.shields.io/packagist/dt/stephenasaredev/paystack.svg?style=flat-square)](https://packagist.org/packages/stephenasaredev/paystack)
+[![License](https://img.shields.io/packagist/l/stephenasaredev/paystack.svg?style=flat-square)](https://packagist.org/packages/stephenasaredev/paystack)
 
 ## Documentation
 
@@ -34,7 +34,7 @@ For full documentation, usage guides, and API reference, please visit:
 You can install the package via composer:
 
 ```bash
-composer require stephenasare/paystack
+composer require stephenasaredev/paystack
 ```
 
 After installing, run the installation command to publish the configuration and migrations:
@@ -121,6 +121,6 @@ MIT
 ## Support
 
 If you find this package helpful, please consider:
--  Starring the repository on [GitHub](https://github.com/stephenasare/paystack)
+-  Starring the repository on [GitHub](https://github.com/stephenasaredev/paystack)
 -  Following me on [Twitter/X](https://x.com/stephenasare1)
 
