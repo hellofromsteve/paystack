@@ -145,4 +145,14 @@ class PageResourceTest extends PaystackTestCase
             $request['product'] === [44, 55]
         );
     }
+
+    #[Test]
+    public function it_can_redirect_to_payment_page()
+    {
+        $slug = 'test-page';
+        $response = Paystack::page()->redirect($slug);
+
+        $this->assertInstanceOf(\Illuminate\Http\RedirectResponse::class, $response);
+        $this->assertEquals("https://paystack.com/pay/$slug", $response->getTargetUrl());
+    }
 }

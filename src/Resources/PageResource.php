@@ -102,4 +102,14 @@ class PageResource extends BaseResource
 
         return $this->handleResponse($response);
     }
+
+    /**
+     * Redirect to the payment page.
+     * @param string $slug
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function redirect(string $slug): \Illuminate\Http\RedirectResponse
+    {
+        return redirect()->away("https://paystack.com/pay/$slug");
+    }
 }
